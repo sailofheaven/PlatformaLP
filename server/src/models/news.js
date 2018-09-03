@@ -20,7 +20,7 @@ var NewsSchema = new Schema({
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
 })
 
-NewsSchema.statics.updateTags = (newsID, data) => {
+NewsSchema.statics.updateTags = (newsID, data, add = false) => {
     const NewsModel = mongoose.model('News');
     const TagsModel = Tag;
 
@@ -37,18 +37,26 @@ NewsSchema.statics.updateTags = (newsID, data) => {
             Tags.push(tag);
         })
     }
-
+    if(add){
+            let newsInfo = new NewsModel();
+            newsInfo.title = data.title;
+            newsInfo.text = data.text;
+            newsInfo.tags = Tags;
+        
+        
+        return newsInfo.save();
+    }
     return NewsModel.findOne({ _id: newsID }).then((newsInfo) => {
-        if (!newsInfo) {
+        if (!newsInfo) {console.log(111)
             newsInfo = new NewsModel();
             newsInfo.title = data.title;
             newsInfo.text = data.text;
         }
         newsInfo.tags = Tags;
         newsInfo.save();
-
+        
         return newsInfo;
-    });
+    }).catch(d=>{console.log((d))});
 }
 
 module.exports = mongoose.model('News', NewsSchema)

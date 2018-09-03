@@ -9,7 +9,8 @@
     "build:client": "webpack --config client/webpack.config.js -p --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:serv": "nodemon server/src/index.js --exec babel-node",
-    "build:serv": "babel server/src -d dist"
+    "build:serv": "babel server/src -d dist",
+    "add:db":"babel-node server/test.js"
   },
   "keywords": [],
   "author": "",
